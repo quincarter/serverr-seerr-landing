@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+
+const faqs = [
+	{
+		question: "What is ServerSeerr?",
+		answer: "ServerSeerr is a mobile application built with React Native that allows you to manage and request media from your Overseerr or Jellyseerr instances directly from your phone."
+	},
+	{
+		question: "How do I connect my server?",
+		answer: "Simply enter your server URL and API key in the settings. ServerSeerr will validate the connection and sync your data instantly."
+	},
+	{
+		question: "Does it support Jellyseerr?",
+		answer: "Yes! ServerSeerr is fully compatible with both Overseerr and Jellyseerr."
+	}
+];
+---
+
+<BaseLayout title="Support | ServerSeerr" description="Frequently Asked Questions and Support for ServerSeerr">
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+			<Hero title="Support & FAQ" tagline="Everything you need to know about ServerSeerr." align="start" />
+			
+			<section class="faq-list">
+				{faqs.map((faq) => (
+					<div class="faq-item">
+						<h3>{faq.question}</h3>
+						<p>{faq.answer}</p>
+					</div>
+				))}
+			</section>
+		</main>
+		<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	.faq-list {
+		display: grid;
+		gap: 2rem;
+		margin-top: 2rem;
+	}
+
+	.faq-item {
+		padding: 2rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 1.5rem;
+	}
+
+	.faq-item h3 {
+		font-size: var(--text-xl);
+		color: var(--gray-0);
+		margin-bottom: 1rem;
+	}
+
+	.faq-item p {
+		color: var(--gray-300);
+		line-height: 1.6;
+	}
+
+	@media (min-width: 50em) {
+		.faq-list {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>

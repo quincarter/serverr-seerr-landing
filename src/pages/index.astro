@@ -1,22 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 // Component Imports
 import CallToAction from '../components/CallToAction.astro';
-// Page section components
 import ContactCTA from '../components/ContactCTA.astro';
-import Grid from '../components/Grid.astro';
 import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import Pill from '../components/Pill.astro';
-import PortfolioPreview from '../components/PortfolioPreview.astro';
 import Skills from '../components/Skills.astro';
 // Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-// Content Fetching: List four most recent work projects
-const projects = (await getCollection('work'))
-	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-	.slice(0, 4);
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -27,22 +18,28 @@ const projects = (await getCollection('work'))
 		<div class="wrapper stack gap-8 lg:gap-20">
 			<header class="hero">
 				<Hero
-					title="Hello, my name is Jeanine White"
-					tagline="I am a Creative Developer who is currently based in Portland, Oregon."
+					title="Request. Sync. Watch."
+					tagline="The ultimate mobile companion for your Overseerr or Jellyseerr media server."
 					align="start"
 				>
 					<div class="roles">
-						<Pill><Icon icon="code" size="1.33em" /> Developer</Pill>
-						<Pill><Icon icon="microphone-stage" size="1.33em" /> Speaker</Pill>
-						<Pill><Icon icon="pencil-line" size="1.33em" /> Writer</Pill>
+						<Pill><Icon icon="rocket-launch" size="1.33em" /> Fast</Pill>
+						<Pill><Icon icon="terminal-window" size="1.33em" /> Native</Pill>
+						<Pill><Icon icon="trophy" size="1.33em" /> Easy</Pill>
+					</div>
+					<div class="cta-group">
+						<CallToAction href="https://github.com/quin/seerr-mobile">
+							Get the App Now!
+							<Icon icon="google-play-logo" size="1.2em" />
+						</CallToAction>
 					</div>
 				</Hero>
 
 				<img
-					alt="Jeanine White smiling in a red plaid shirt and tortoise shell glasses"
+					alt="ServerSeerr App Preview"
 					width="480"
 					height="620"
-					src="/assets/portrait.jpg"
+					src="/assets/phone-screenshots/iphone-home.png"
 				/>
 			</header>
 
@@ -52,25 +49,24 @@ const projects = (await getCollection('work'))
 		<main class="wrapper stack gap-20 lg:gap-48">
 			<section class="section with-background with-cta">
 				<header class="section-header stack gap-2 lg:gap-4">
-					<h3>Selected Work</h3>
-					<p>Take a look below at some of my featured work for clients from the past few years.</p>
+					<h3>Why ServerSeerr?</h3>
+					<p>ServerSeerr bridges the gap between your media requests and your mobile lifestyle. No more clunky web interfaces on small screens.</p>
 				</header>
 
 				<div class="gallery">
-					<Grid variant="offset">
-						{
-							projects.map((project) => (
-								<li>
-									<PortfolioPreview project={project} />
-								</li>
-							))
-						}
-					</Grid>
+					<div class="feature-card">
+						<h4>Instant Requests</h4>
+						<p>Search and request movies or TV shows in seconds. Get notified when they are ready.</p>
+					</div>
+					<div class="feature-card">
+						<h4>Multi-Server Support</h4>
+						<p>Manage multiple instances with ease. Switch between your home server and your backup in a tap.</p>
+					</div>
 				</div>
 
 				<div class="cta">
-					<CallToAction href="/work/">
-						View All
+					<CallToAction href="/showcase/">
+						Explore Showcase
 						<Icon icon="arrow-right" size="1.2em" />
 					</CallToAction>
 				</div>
@@ -78,23 +74,19 @@ const projects = (await getCollection('work'))
 
 			<section class="section with-background bg-variant">
 				<header class="section-header stack gap-2 lg:gap-4">
-					<h3>Mentions</h3>
+					<h3>Support & Community</h3>
 					<p>
-						I have been fortunate enough to receive praise for my work in several publications. Take
-						a look below to learn more.
+						Join our growing community and get the most out of ServerSeerr. Check our FAQ or reach out for help.
 					</p>
 				</header>
 
 				<div class="gallery">
-					<Grid variant="small">
-						{
-							['Medium', 'BuzzFeed', 'The Next Web', 'awwwards.', 'TechCrunch'].map((brand) => (
-								<li class="mention-card">
-									<p>{brand}</p>
-								</li>
-							))
-						}
-					</Grid>
+					<div class="cta-box">
+						<CallToAction href="/support/">
+							Visit FAQ
+							<Icon icon="terminal-window" size="1.2em" />
+						</CallToAction>
+					</div>
 				</div>
 			</section>
 		</main>
@@ -123,6 +115,12 @@ const projects = (await getCollection('work'))
 		box-shadow: var(--shadow-md);
 	}
 
+	.cta-group {
+		margin-top: 1.5rem;
+		display: flex;
+		justify-content: center;
+	}
+
 	@media (min-width: 50em) {
 		.hero {
 			display: grid;
@@ -141,6 +139,10 @@ const projects = (await getCollection('work'))
 			aspect-ratio: 3 / 4;
 			border-radius: 4.5rem;
 			object-fit: cover;
+		}
+
+		.cta-group {
+			justify-content: flex-start;
 		}
 	}
 
@@ -218,6 +220,9 @@ const projects = (await getCollection('work'))
 
 		.gallery {
 			grid-area: gallery;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 2rem;
 		}
 
 		.cta {
@@ -225,25 +230,33 @@ const projects = (await getCollection('work'))
 		}
 	}
 
-	/* ====================================================== */
+	@media (min-width: 30em) {
+		.gallery {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
 
-	.mention-card {
+	.feature-card {
 		display: flex;
-		height: 7rem;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 2rem;
+		background: var(--gradient-subtle);
 		border: 1px solid var(--gray-800);
 		border-radius: 1.5rem;
 		color: var(--gray-300);
-		background: var(--gradient-subtle);
 		box-shadow: var(--shadow-sm);
 	}
 
-	@media (min-width: 50em) {
-		.mention-card {
-			border-radius: 1.5rem;
-			height: 9.5rem;
-		}
+	.feature-card h4 {
+		font-size: var(--text-xl);
+		color: var(--gray-0);
+	}
+
+	.cta-box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 4rem;
 	}
 </style>

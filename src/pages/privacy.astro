@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+---
+
+<BaseLayout title="Privacy Policy | ServerSeerr" description="Privacy Policy for ServerSeerr">
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+			<Hero title="Privacy Policy" tagline="How we handle your data." align="start" />
+			
+			<section class="privacy-content">
+				<div class="content-box">
+					<h3>Data Collection</h3>
+					<p>ServerSeerr does not collect any of your personal data on its own. All the information you provide (server URL, API keys, etc.) is stored locally on your device and only used to communicate with your specified media server.</p>
+					
+					<h3>Security</h3>
+					<p>Your API keys and server information are stored securely on your device. We do not transmit this data to any third party other than your own server instance.</p>
+					
+					<h3>Third-Party Services</h3>
+					<p>ServerSeerr interacts with your Overseerr or Jellyseerr instance. Please refer to their respective privacy policies for how they handle your data.</p>
+					
+					<h3>Changes to This Policy</h3>
+					<p>We may update our Privacy Policy from time to time. You are advised to review this page periodically for any changes.</p>
+				</div>
+			</section>
+		</main>
+		<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	.privacy-content {
+		margin-top: 2rem;
+		color: var(--gray-300);
+		line-height: 1.6;
+	}
+
+	.content-box {
+		padding: 3rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 1.5rem;
+	}
+
+	.content-box h3 {
+		color: var(--gray-0);
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		font-size: var(--text-2xl);
+	}
+
+	.content-box h3:first-child {
+		margin-top: 0;
+	}
+
+	.content-box p {
+		margin-bottom: 1.5rem;
+	}
+</style>

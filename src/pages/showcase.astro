@@ -1,0 +1,326 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+
+const showcases = [
+	{
+		title: "Your Media at a Glance",
+		description: "The home screen gives you instant access to trending content and your personalized watchlists. Native, fast, and beautiful.",
+		image: "/assets/phone-screenshots/iphone-home.png",
+		align: "right"
+	},
+	{
+		title: "Deep Media Insights",
+		description: "Explore cast details, trailers, and availability. Requesting is just a tap away with full integration to your server.",
+		image: "/assets/phone-screenshots/iphone-media-detail-1.png",
+		align: "left"
+	},
+	{
+		title: "Know Your Actors",
+		description: "Dive deep into actor filmographies. Find everything they've been in and discover your next favorite show.",
+		image: "/assets/phone-screenshots/iphone-actor-detail-1.png",
+		align: "right"
+	},
+	{
+		title: "Real-time Monitoring",
+		description: "Keep an eye on your server health and analytics. See what your users are watching and how your hardware is performing.",
+		image: "/assets/phone-screenshots/iphone-monitor-analytics.png",
+		align: "left"
+	},
+	{
+		title: "Sonarr & Radarr Sync",
+		description: "Full visibility into your download queues. Monitor Sonarr and Radarr directly within the app to see exactly when your media will be ready.",
+		image: "/assets/phone-screenshots/iphone-sonarr-detail-1.png",
+		align: "right"
+	},
+	{
+		title: "User Activity Tracking",
+		description: "Get detailed insights into who is requesting what. Track user trends and manage requests with a simple, powerful interface.",
+		image: "/assets/phone-screenshots/iphone-monitor-analytics-user.png",
+		align: "left"
+	},
+	{
+		title: "Complete Media Context",
+		description: "From similar titles to detailed availability across all your services, never miss a beat in your library management.",
+		image: "/assets/phone-screenshots/iphone-media-detail-2.png",
+		align: "right"
+	}
+];
+---
+
+<BaseLayout title="Showcase | ServerSeerr" description="Take a look at ServerSeerr in action.">
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-20">
+			<Hero
+				title="Product Showcase"
+				tagline="Experience the power of native media management."
+				align="center"
+			/>
+
+			<div class="showcase-container">
+				{showcases.map((item) => (
+					<section class={`showcase-item ${item.align}`}>
+						<div class="content stack gap-4">
+							<h2>{item.title}</h2>
+							<p>{item.description}</p>
+						</div>
+						<div class="image-wrapper">
+							<div class="phone-frame">
+								<img src={item.image} alt={item.title} />
+							</div>
+						</div>
+					</section>
+				))}
+			</div>
+
+			<section class="cross-platform-section stack gap-12">
+				<header class="section-header stack gap-4">
+					<h2>Any Device. Anywhere.</h2>
+					<p>ServerSeerr is built with Compose Multiplatform, providing a truly native experience across all your devices.</p>
+				</header>
+				
+				<div class="device-grid">
+					<div class="device macos">
+						<div class="mac-frame">
+							<div class="mac-screen">
+								<img src="/assets/macos-screenshots/Screenshot 2026-03-02 at 7.51.52 PM.png" alt="macOS Version" />
+							</div>
+							<div class="mac-base"></div>
+						</div>
+						<span>Laptop</span>
+					</div>
+
+					<div class="device ipad">
+						<div class="ipad-frame">
+							<img src="/assets/ipad-screenshots/Simulator Screenshot - iPad Pro 13-inch (M5) - 2026-03-02 at 19.15.49.png" alt="iPad Version" />
+						</div>
+						<span>Tablet</span>
+					</div>
+
+					<div class="device ios">
+						<div class="phone-frame small">
+							<img src="/assets/phone-screenshots/iphone-home.png" alt="iOS Version" />
+						</div>
+						<span>iOS/Android</span>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	.showcase-container {
+		display: flex;
+		flex-direction: column;
+		gap: 10rem;
+	}
+
+	.showcase-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4rem;
+	}
+
+	.content {
+		max-width: 40ch;
+		text-align: center;
+	}
+
+	.content h2 {
+		font-size: var(--text-3xl);
+		color: var(--gray-0);
+	}
+
+	.content p {
+		font-size: var(--text-lg);
+		color: var(--gray-300);
+		line-height: 1.6;
+	}
+
+	.image-wrapper {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+	}
+
+	.phone-frame {
+		position: relative;
+		width: 100%;
+		max-width: 320px;
+		aspect-ratio: 9 / 19.5;
+		background: #111;
+		border-radius: 3rem;
+		padding: 0.75rem;
+		border: 8px solid var(--gray-800);
+		box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+		overflow: hidden;
+	}
+
+	.phone-frame img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 2.25rem;
+	}
+
+	@media (min-width: 50em) {
+		.showcase-item {
+			flex-direction: row;
+			justify-content: space-between;
+			text-align: left;
+		}
+
+		.showcase-item.left {
+			flex-direction: row-reverse;
+		}
+
+		.content {
+			text-align: left;
+			padding: 2rem;
+		}
+
+		.image-wrapper {
+			width: 50%;
+		}
+
+		/* "Shiny" scroll effect concept */
+		.phone-frame {
+			transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+		
+		.showcase-item:hover .phone-frame {
+			transform: scale(1.05) translateY(-10px) rotate(-1deg);
+		}
+
+		.showcase-item.left:hover .phone-frame {
+			transform: scale(1.05) translateY(-10px) rotate(1deg);
+		}
+	}
+
+	/* Add a gradient glow behind the phones */
+	.image-wrapper::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 150%;
+		height: 150%;
+		background: radial-gradient(circle, var(--accent-regular) 0%, transparent 70%);
+		transform: translate(-50%, -50%);
+		opacity: 0.15;
+		pointer-events: none;
+		z-index: -1;
+	}
+	/* Cross-Platform Section */
+	.cross-platform-section {
+		text-align: center;
+		padding: 5rem 0;
+		border-top: 1px solid var(--gray-800);
+	}
+
+	.section-header h2 {
+		font-size: var(--text-4xl);
+		color: var(--gray-0);
+	}
+
+	.device-grid {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6rem;
+		width: 100%;
+	}
+
+	.device {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		width: 100%;
+	}
+
+	.device span {
+		font-weight: 600;
+		color: var(--gray-300);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: var(--text-sm);
+	}
+
+	/* macOS Frame */
+	.mac-frame {
+		width: 100%;
+		max-width: 800px;
+		background: #1d1d1f;
+		border-radius: 12px 12px 0 0;
+		padding: 10px;
+		position: relative;
+		box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+	}
+
+	.mac-screen {
+		background: #000;
+		border-radius: 6px;
+		overflow: hidden;
+		aspect-ratio: 16 / 10;
+	}
+
+	.mac-screen img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.mac-base {
+		width: 110%;
+		height: 12px;
+		background: #3a3a3c;
+		margin-left: -5%;
+		border-radius: 0 0 12px 12px;
+		position: relative;
+	}
+
+	/* iPad Frame */
+	.ipad-frame {
+		width: 100%;
+		max-width: 500px;
+		aspect-ratio: 4 / 3;
+		background: #000;
+		border: 12px solid #1c1c1e;
+		border-radius: 2rem;
+		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+		overflow: hidden;
+	}
+
+	.ipad-frame img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Phone Small Frame */
+	.phone-frame.small {
+		max-width: 200px;
+	}
+
+	@media (min-width: 50em) {
+		.device-grid {
+			flex-direction: row;
+			justify-content: center;
+			align-items: flex-end;
+			gap: 4rem;
+		}
+
+		.device.macos { width: 50%; }
+		.device.ipad { width: 30%; }
+		.device.ios { width: 15%; }
+
+		.mac-frame { max-width: none; }
+	}
+</style>
