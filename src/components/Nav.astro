@@ -14,8 +14,7 @@ const textLinks: { label: string; href: string }[] = [
 
 /** Icon links to social media — edit these with links to your profiles! */
 const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[] = [
-	{ label: 'GitHub', href: 'https://github.com/quin/seerr-mobile', icon: 'github-logo' },
-	{ label: 'App Store', href: 'https://apple.com', icon: 'app-store-logo' },
+	{ label: 'App Store', href: 'https://apps.apple.com/us/app/serverrseerr/id6759878396', icon: 'app-store-logo' },
 	{ label: 'Play Store', href: 'https://play.google.com', icon: 'google-play-logo' },
 ];
 
@@ -61,10 +60,13 @@ const isCurrentPage = (href: string) => {
 			<div class="socials">
 				{
 					iconLinks.map(({ href, icon, label }) => (
-						<a href={href} class="social">
-							<span class="sr-only">{label}</span>
-							<Icon icon={icon} />
-						</a>
+						<div class="social-wrapper">
+							<a href={href} target="_blank" class="social" data-label={label}>
+								<span class="sr-only">{label}</span>
+								<Icon icon={icon} />
+							</a>
+							{label === 'Play Store' && <div class="nav-tooltip">Coming soon!</div>}
+						</div>
 					))
 				}
 			</div>
@@ -86,10 +88,13 @@ const isCurrentPage = (href: string) => {
 			<div class="socials">
 				{
 					iconLinks.map(({ href, icon, label }) => (
-						<a href={href} class="social">
-							<span class="sr-only">{label}</span>
-							<Icon icon={icon} />
-						</a>
+						<div class="social-wrapper">
+							<a href={href} target="_blank" class="social" data-label={label}>
+								<span class="sr-only">{label}</span>
+								<Icon icon={icon} />
+							</a>
+							{label === 'Play Store' && <div class="nav-tooltip">Coming soon!</div>}
+						</div>
 					))
 				}
 			</div>
@@ -133,6 +138,20 @@ const isCurrentPage = (href: string) => {
 			const mediaQueries = window.matchMedia('(min-width: 50em)');
 			handleViewports(mediaQueries);
 			mediaQueries.addEventListener('change', handleViewports);
+
+			// Handle 'Coming Soon' for Play Store link
+			document.querySelectorAll('.social[data-label="Play Store"]').forEach(link => {
+				link.addEventListener('click', (e) => {
+					e.preventDefault();
+					const wrapper = link.closest('.social-wrapper');
+					if (wrapper) {
+						wrapper.classList.add('show-tooltip');
+						setTimeout(() => {
+							wrapper.classList.remove('show-tooltip');
+						}, 2000);
+					}
+				});
+			});
 		}
 	}
 	customElements.define('menu-button', MenuButton);
@@ -250,6 +269,57 @@ const isCurrentPage = (href: string) => {
 		text-decoration: none;
 		color: var(--accent-dark);
 		transition: color var(--theme-transition);
+	}
+
+	.social-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	.nav-tooltip {
+		position: absolute;
+		bottom: calc(100% + 8px);
+		left: 50%;
+		transform: translateX(-50%) translateY(5px);
+		background: var(--gray-0);
+		color: var(--gray-999);
+		padding: 0.25rem 0.6rem;
+		border-radius: 0.4rem;
+		font-size: 0.75rem;
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+		box-shadow: var(--shadow-md);
+		z-index: 100;
+		pointer-events: none;
+		border: 1px solid var(--gray-800);
+	}
+
+	.nav-tooltip::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border-width: 4px;
+		border-style: solid;
+		border-color: var(--gray-0) transparent transparent transparent;
+	}
+
+	.social-wrapper.show-tooltip .nav-tooltip {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	@media (hover: hover) {
+		.social-wrapper:hover .nav-tooltip {
+			opacity: 1;
+			visibility: visible;
+			transform: translateX(-50%) translateY(0);
+		}
 	}
 
 	.social:hover,

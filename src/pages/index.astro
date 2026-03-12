@@ -6,6 +6,7 @@ import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import Pill from '../components/Pill.astro';
 import Skills from '../components/Skills.astro';
+import SmartDownloadButton from '../components/SmartDownloadButton.astro';
 // Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -28,10 +29,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 						<Pill><Icon icon="trophy" size="1.33em" /> Easy</Pill>
 					</div>
 					<div class="cta-group">
-						<CallToAction href="https://play.google.com">
-							Get the App Now!
-							<Icon icon="google-play-logo" size="1.2em" />
-						</CallToAction>
+						<SmartDownloadButton title="Get the App Now!" />
 					</div>
 				</Hero>
 

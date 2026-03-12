@@ -1,0 +1,132 @@
+---
+import Icon from './Icon.astro';
+import CallToAction from './CallToAction.astro';
+
+interface Props {
+	title?: string;
+}
+
+const { title = "Get the App" } = Astro.props;
+---
+
+<div class="smart-download-wrapper">
+	<CallToAction href="https://apps.apple.com/us/app/serverrseerr/id6759878396">
+		<span class="button-text">{title}</span>
+		<span class="icon-rocket">
+			<Icon icon="rocket-launch" size="1.2em" />
+		</span>
+		<span class="icon-play" style="display: none;">
+			<Icon icon="google-play-logo" size="1.2em" />
+		</span>
+	</CallToAction>
+	<div class="tooltip">Android App coming soon!</div>
+</div>
+
+<style>
+	.smart-download-wrapper {
+		position: relative;
+		display: inline-block;
+	}
+
+	.icon-rocket, .icon-play {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.tooltip {
+		position: absolute;
+		bottom: calc(100% + 10px);
+		left: 50%;
+		transform: translateX(-50%) translateY(10px);
+		background: var(--gray-0);
+		color: var(--gray-999);
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		font-size: var(--text-sm);
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+		box-shadow: var(--shadow-md);
+		z-index: 10;
+		pointer-events: none;
+		border: 1px solid var(--gray-800);
+	}
+
+	.tooltip::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border-width: 6px;
+		border-style: solid;
+		border-color: var(--gray-0) transparent transparent transparent;
+	}
+
+	.smart-download-wrapper.show-tooltip .tooltip {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	/* Hover effect for desktop when disabled */
+	@media (hover: hover) {
+		.smart-download-wrapper.disabled:hover .tooltip {
+			opacity: 1;
+			visibility: visible;
+			transform: translateX(-50%) translateY(0);
+		}
+	}
+</style>
+
+<script>
+	function updateDownloadButtons() {
+		const wrappers = document.querySelectorAll('.smart-download-wrapper');
+		if (wrappers.length === 0) return;
+
+		const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+		
+		const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream;
+		const isAndroid = /android/i.test(userAgent);
+		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 && !isIOS;
+
+		wrappers.forEach(wrapper => {
+			const link = wrapper.querySelector('a');
+			const text = wrapper.querySelector('.button-text');
+			const rocketIcon = wrapper.querySelector('.icon-rocket') as HTMLElement;
+			const playIcon = wrapper.querySelector('.icon-play') as HTMLElement;
+
+			if (isAndroid) {
+				wrapper.classList.add('disabled');
+				if (link) {
+					link.href = "javascript:void(0)";
+					link.style.opacity = "0.7";
+					link.style.cursor = "default";
+					
+					link.addEventListener('click', (e) => {
+						e.preventDefault();
+						wrapper.classList.add('show-tooltip');
+						setTimeout(() => {
+							wrapper.classList.remove('show-tooltip');
+						}, 2000);
+					});
+				}
+				if (text) text.textContent = "Coming Soon to Android";
+				if (rocketIcon) rocketIcon.style.display = "none";
+				if (playIcon) playIcon.style.display = "inline-flex";
+			} else if (isIOS) {
+				if (text) text.textContent = "Get on App Store";
+				if (rocketIcon) rocketIcon.style.display = "inline-flex";
+				if (playIcon) playIcon.style.display = "none";
+			} else if (isMac) {
+				if (text) text.textContent = "Get for macOS";
+				if (rocketIcon) rocketIcon.style.display = "inline-flex";
+				if (playIcon) playIcon.style.display = "none";
+			}
+		});
+	}
+
+	updateDownloadButtons();
+	document.addEventListener('DOMContentLoaded', updateDownloadButtons);
+</script>
