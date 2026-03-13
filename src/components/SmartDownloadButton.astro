@@ -1,39 +1,149 @@
 ---
 import Icon from './Icon.astro';
-import CallToAction from './CallToAction.astro';
 
 interface Props {
 	title?: string;
 }
 
 const { title = "Get the App" } = Astro.props;
+
+const stores = [
+	{ id: 'ios', name: 'App Store', icon: 'app-store-logo', href: 'https://apps.apple.com/us/app/serverrseerr/id6759878396', label: 'Get on App Store' },
+	{ id: 'macos', name: 'Mac App Store', icon: 'rocket-launch', href: 'https://apps.apple.com/us/app/serverrseerr/id6759878396', label: 'Get for macOS' },
+	{ id: 'android', name: 'Google Play', icon: 'google-play-logo', href: '#', label: 'Get on Google Play', disabled: true }
+];
 ---
 
-<div class="smart-download-wrapper">
-	<CallToAction href="https://apps.apple.com/us/app/serverrseerr/id6759878396">
-		<span class="button-text">{title}</span>
-		<span class="icon-rocket">
-			<Icon icon="rocket-launch" size="1.2em" />
-		</span>
-		<span class="icon-play" style="display: none;">
-			<Icon icon="google-play-logo" size="1.2em" />
-		</span>
-	</CallToAction>
-	<div class="tooltip">Android App coming soon!</div>
+<div class="smart-download-group">
+	<div class="split-button">
+		<a href={stores[0].href} class="primary-cta" target="_blank">
+			<span class="icon-container">
+				<span class="icon-ios" style="display: none;"><Icon icon="app-store-logo" size="1.2em" /></span>
+				<span class="icon-macos" style="display: none;"><Icon icon="rocket-launch" size="1.2em" /></span>
+				<span class="icon-android" style="display: none;"><Icon icon="google-play-logo" size="1.2em" /></span>
+			</span>
+			<span class="button-text">{title}</span>
+		</a>
+		<button class="dropdown-toggle" aria-label="More download options" aria-haspopup="true" aria-expanded="false">
+			<Icon icon="caret-down" size="1.2em" />
+		</button>
+	</div>
+
+	<ul class="dropdown-menu">
+		{stores.map(store => (
+			<li class={store.disabled ? 'disabled' : ''} data-id={store.id}>
+				<a href={store.href} target={store.disabled ? '_self' : '_blank'} class="dropdown-item">
+					<Icon icon={store.icon} size="1.2em" />
+					<span>{store.name}{store.disabled ? ' (Soon)' : ''}</span>
+				</a>
+			</li>
+		))}
+	</ul>
+	
+	<div class="android-tooltip">Android App coming soon!</div>
 </div>
 
 <style>
-	.smart-download-wrapper {
+	.smart-download-group {
 		position: relative;
-		display: inline-block;
-	}
-
-	.icon-rocket, .icon-play {
 		display: inline-flex;
+		flex-direction: column;
 		align-items: center;
 	}
 
-	.tooltip {
+	.split-button {
+		display: flex;
+		align-items: stretch;
+		background: var(--gradient-accent-orange);
+		border-radius: 999rem;
+		box-shadow: var(--shadow-md);
+		overflow: hidden;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.split-button:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.primary-cta {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		padding: 0.6rem 1.2rem 0.6rem 1.8rem;
+		color: var(--accent-text-over);
+		text-decoration: none;
+		font-weight: 500;
+		font-size: var(--text-md);
+		border-right: 1px solid rgba(255, 255, 255, 0.2);
+		white-space: nowrap;
+		line-height: 1.1;
+	}
+
+	.dropdown-toggle {
+		background: transparent;
+		border: none;
+		padding: 0 0.8rem;
+		color: var(--accent-text-over);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		transition: background-color 0.2s ease;
+	}
+
+	.dropdown-toggle:hover {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.dropdown-menu {
+		position: absolute;
+		top: calc(100% + 0.5rem);
+		right: 0;
+		background: var(--gray-999);
+		border: 1px solid var(--gray-800);
+		border-radius: 1rem;
+		list-style: none;
+		padding: 0.5rem;
+		margin: 0;
+		box-shadow: var(--shadow-lg);
+		display: none;
+		z-index: 100;
+		min-width: 220px;
+	}
+
+	.dropdown-menu.show {
+		display: block;
+		animation: fadeIn 0.2s ease;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(-10px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	.dropdown-item {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		padding: 0.8rem 1rem;
+		color: var(--gray-200);
+		text-decoration: none;
+		border-radius: 0.5rem;
+		transition: background-color 0.2s ease, color 0.2s ease;
+		font-size: var(--text-sm);
+	}
+
+	.dropdown-item:hover {
+		background-color: var(--gray-800);
+		color: var(--gray-0);
+	}
+
+	.disabled .dropdown-item {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.android-tooltip {
 		position: absolute;
 		bottom: calc(100% + 10px);
 		left: 50%;
@@ -53,80 +163,106 @@ const { title = "Get the App" } = Astro.props;
 		border: 1px solid var(--gray-800);
 	}
 
-	.tooltip::after {
-		content: '';
-		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-		border-width: 6px;
-		border-style: solid;
-		border-color: var(--gray-0) transparent transparent transparent;
-	}
-
-	.smart-download-wrapper.show-tooltip .tooltip {
+	.android-tooltip.show {
 		opacity: 1;
 		visibility: visible;
 		transform: translateX(-50%) translateY(0);
 	}
 
-	/* Hover effect for desktop when disabled */
-	@media (hover: hover) {
-		.smart-download-wrapper.disabled:hover .tooltip {
-			opacity: 1;
-			visibility: visible;
-			transform: translateX(-50%) translateY(0);
+	.icon-container {
+		display: flex;
+		align-items: center;
+	}
+
+	@media (min-width: 50em) {
+		.primary-cta {
+			padding: 0.8rem 1.5rem 0.8rem 2.2rem;
+			font-size: var(--text-lg);
+		}
+		.dropdown-toggle {
+			padding: 0 1.2rem;
 		}
 	}
 </style>
 
 <script>
 	function updateDownloadButtons() {
-		const wrappers = document.querySelectorAll('.smart-download-wrapper');
-		if (wrappers.length === 0) return;
+		const groups = document.querySelectorAll('.smart-download-group');
+		if (groups.length === 0) return;
 
 		const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-		
 		const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream;
 		const isAndroid = /android/i.test(userAgent);
 		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 && !isIOS;
 
-		wrappers.forEach(wrapper => {
-			const link = wrapper.querySelector('a');
-			const text = wrapper.querySelector('.button-text');
-			const rocketIcon = wrapper.querySelector('.icon-rocket') as HTMLElement;
-			const playIcon = wrapper.querySelector('.icon-play') as HTMLElement;
+		groups.forEach(group => {
+			const primaryCta = group.querySelector('.primary-cta') as HTMLAnchorElement;
+			const buttonText = group.querySelector('.button-text');
+			const dropdownToggle = group.querySelector('.dropdown-toggle') as HTMLButtonElement;
+			const dropdownMenu = group.querySelector('.dropdown-menu') as HTMLElement;
+			const androidTooltip = group.querySelector('.android-tooltip') as HTMLElement;
+
+			const iconIos = group.querySelector('.icon-ios') as HTMLElement;
+			const iconMacos = group.querySelector('.icon-macos') as HTMLElement;
+			const iconAndroid = group.querySelector('.icon-android') as HTMLElement;
+
+			// Reset icons
+			if (iconIos) iconIos.style.display = 'none';
+			if (iconMacos) iconMacos.style.display = 'none';
+			if (iconAndroid) iconAndroid.style.display = 'none';
 
 			if (isAndroid) {
-				wrapper.classList.add('disabled');
-				if (link) {
-					link.href = "javascript:void(0)";
-					link.style.opacity = "0.7";
-					link.style.cursor = "default";
-					
-					link.addEventListener('click', (e) => {
-						e.preventDefault();
-						wrapper.classList.add('show-tooltip');
-						setTimeout(() => {
-							wrapper.classList.remove('show-tooltip');
-						}, 2000);
-					});
-				}
-				if (text) text.textContent = "Coming Soon to Android";
-				if (rocketIcon) rocketIcon.style.display = "none";
-				if (playIcon) playIcon.style.display = "inline-flex";
-			} else if (isIOS) {
-				if (text) text.textContent = "Get on App Store";
-				if (rocketIcon) rocketIcon.style.display = "inline-flex";
-				if (playIcon) playIcon.style.display = "none";
+				if (primaryCta) primaryCta.href = '#';
+				if (buttonText) buttonText.textContent = 'Coming Soon to Android';
+				if (iconAndroid) iconAndroid.style.display = 'inline-flex';
+				
+				primaryCta?.addEventListener('click', (e) => {
+					e.preventDefault();
+					androidTooltip?.classList.add('show');
+					setTimeout(() => androidTooltip?.classList.remove('show'), 2000);
+				});
 			} else if (isMac) {
-				if (text) text.textContent = "Get for macOS";
-				if (rocketIcon) rocketIcon.style.display = "inline-flex";
-				if (playIcon) playIcon.style.display = "none";
+				if (primaryCta) primaryCta.href = 'https://apps.apple.com/us/app/serverrseerr/id6759878396';
+				if (buttonText) buttonText.textContent = 'Get for macOS';
+				if (iconMacos) iconMacos.style.display = 'inline-flex';
+			} else {
+				// Default or iOS
+				if (primaryCta) primaryCta.href = 'https://apps.apple.com/us/app/serverrseerr/id6759878396';
+				if (buttonText) buttonText.textContent = isIOS ? 'Get on App Store' : 'Get the App';
+				if (iconIos) iconIos.style.display = 'inline-flex';
 			}
+
+			// Dropdown Toggle
+			dropdownToggle?.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+				dropdownToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+				dropdownMenu?.classList.toggle('show');
+			});
+
+			// Handle Android click in dropdown
+			const androidItem = group.querySelector('[data-id="android"] .dropdown-item');
+			androidItem?.addEventListener('click', (e) => {
+				e.preventDefault();
+				androidTooltip?.classList.add('show');
+				setTimeout(() => androidTooltip?.classList.remove('show'), 2000);
+				dropdownMenu?.classList.remove('show');
+				dropdownToggle?.setAttribute('aria-expanded', 'false');
+			});
+		});
+
+		// Close all dropdowns when clicking outside
+		document.addEventListener('click', () => {
+			groups.forEach(group => {
+				const dropdownToggle = group.querySelector('.dropdown-toggle');
+				const dropdownMenu = group.querySelector('.dropdown-menu');
+				dropdownToggle?.setAttribute('aria-expanded', 'false');
+				dropdownMenu?.classList.remove('show');
+			});
 		});
 	}
 
 	updateDownloadButtons();
-	document.addEventListener('DOMContentLoaded', updateDownloadButtons);
+	// For Astro view transitions
+	document.addEventListener('astro:after-swap', updateDownloadButtons);
 </script>
