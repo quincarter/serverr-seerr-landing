@@ -1,16 +1,17 @@
-# ServerSeerr Landing Page
+# ServerrSeerr Landing Page
 
 <div align="center">
-  <img src="public/icon.png" width="128" height="128" alt="ServerSeerr Icon" />
-  <h1>ServerSeerr</h1>
+  <img src="public/icon.png" width="128" height="128" alt="ServerrSeerr Icon" />
+  <h1>ServerrSeerr</h1>
   <p>Request. Sync. Watch. The ultimate mobile companion for your Overseerr or Jellyseerr media server.</p>
 </div>
 
 ## 🚀 Project Overview
 
-This is the official landing page for **ServerSeerr**, built with [Astro](https://astro.build) using a highly customized version of the Portfolio template. It features a modern, "shiny" aesthetic with glassmorphism effects and native device showcases.
+This is the official landing page for **ServerrSeerr**, built with [Astro](https://astro.build) using a highly customized version of the Portfolio template. It features a modern, "shiny" aesthetic with glassmorphism effects and native device showcases.
 
 ### Key Features:
+
 - **Product Showcase:** Interactive, scroll-aware showcase of mobile, tablet, and desktop versions.
 - **Cross-Platform:** Visualizing the app's native experience across iOS, iPadOS, and macOS.
 - **Support & FAQ:** A dedicated section for user troubleshooting and common questions.
@@ -42,13 +43,13 @@ This is the official landing page for **ServerSeerr**, built with [Astro](https:
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your static site to `dist/`                |
-| `npm run preview`         | Preview your build locally                       |
-| `npm run astro ...`       | Run native Astro CLI commands                    |
+| Command             | Action                                      |
+| :------------------ | :------------------------------------------ |
+| `npm install`       | Installs dependencies                       |
+| `npm run dev`       | Starts local dev server at `localhost:4321` |
+| `npm run build`     | Build your static site to `dist/`           |
+| `npm run preview`   | Preview your build locally                  |
+| `npm run astro ...` | Run native Astro CLI commands               |
 
 ---
 
